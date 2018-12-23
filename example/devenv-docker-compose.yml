@@ -1,0 +1,18 @@
+services:
+  example:
+    container_name: devenv_example
+    devices:
+    - /dev/dri
+    environment:
+    - USERNAME=dferigo
+    - USER_UID=1001
+    - USER_GID=1001
+    - DISPLAY
+    - XAUTHORITY=/tmp/.devenv_example.xauth
+    image: devenv_example
+    runtime: runc
+    volumes:
+    - /dev/shm:/dev/shm:rw
+    - /tmp/.devenv_example.xauth:/tmp/.devenv_example.xauth:rw
+    - /tmp/.X11-unix:/tmp/.X11-unix:rw
+version: '2.3'

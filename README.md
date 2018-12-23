@@ -6,6 +6,7 @@
 - [Setup](#setup)
   - [Python script](#pythonscript)
   - [Docker image](#dockerimage)
+- [Example](#example)
 
 ## Why?
 
@@ -83,6 +84,29 @@ optional arguments:
 You can either build the image locally or download it from [dockerhub](https://hub.docker.com/r/diegoferigo/devenv). This repository exploits the CI pipeline to push weekly new images, they are always updated and built on top of the latest version of the `ubuntu:bionic` image.
 
 Read the [docker/README.md](docker/README.md) for further information.
+
+## Example
+
+You can find a simple application in the [example](example/) folder. It shows a minimal setup for forwarding a popup to the host X server. Execute the following commands:
+
+```sh
+# Install the script
+pip3 install .
+
+# Build the base docker image
+cd docker
+make intel
+
+# Build the example image with X11
+cd ../example
+docker build --build-arg from=diegoferigo/devenv:intel -t devenv_example .
+devenv -f devenv.yml -o devenv-docker-compose up
+# Or just "devenv up"
+```
+
+A popup will appear on your display.
+
+The python script processes the [`devenv.yml`](example/devenv.yml) file and creates an intermediate [`devenv-docker-compose.yml`](example/devenv-docker-compose.yml) file which is later used by `docker-compose`. All the extra arguments passed to the `devenv` script which are not recognized are passed to `docker-compose`, such as `up` in this example. If you want to only generate the `docker-compose` configuration out of the `devenv` yaml, use the `-G` option.
 
 ---
 

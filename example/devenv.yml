@@ -1,0 +1,16 @@
+version: '2.3'
+
+# This is a regular docker-compose configuration.
+services:
+  example:
+    image: "devenv_example"
+    container_name: "devenv_example"
+
+# This is the devenv section. The python wrapper reads this configuration,
+# expands it, and fills the above section accordingly.
+devenv:
+  version: '1.0'
+  example: # This element name should match the service element
+    user: "$(whoami)" # In the devenv section, commands are evaluated in a shell
+    gpu: "intel"
+    x11: "xauth"
