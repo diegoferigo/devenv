@@ -1,5 +1,7 @@
 # devenv
 
+[![Build Status (master)](https://img.shields.io/travis-ci/com/diegoferigo/development-iit/master.svg?logo=travis&label=master)](https://travis-ci.com/diegoferigo/development-iit)
+
 - [Why?](#why)
 - [Solutions](#solutions)
 - [Features](#features)
