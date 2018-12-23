@@ -1,0 +1,38 @@
+version: '2.3'
+
+services:
+  ci-test:
+    image: "diegoferigo/testing"
+    container_name: "testing"
+    command: "bash"
+    init: true
+    environment:
+      - FOO="bar"
+    ports:
+      - 8000:8000
+      - 8888:8888
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+
+devenv:
+  version: '1.0'
+  ci-test:
+    user: "$(whoami)"
+    project_dir: "$TRAVIS_BUILD_DIR"
+    resources:
+      directories:
+        - "$HOME/.ccache:$HOME/.ccache:rw"
+      files:
+        - "$HOME/.bash_history:$HOME/.bash_history:rw"
+    gpu: "nvidia"
+    x11: "xauth"
+    matlab:
+      folder: "$TRAVIS_BUILD_DIR"
+      mac: "aa:bb:cc:dd:00:11"
+      dotdir: "$HOME/.matlab:$HOME/.matlab"
+    init: "systemd"
+    gdb: true
+    git:
+      username: "Travis CI"
+      email: "travis@ci.com"

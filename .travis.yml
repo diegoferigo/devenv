@@ -1,8 +1,10 @@
 language: generic
 services: docker
 os: linux
+dist: xenial
 
 stages:
+  - python
   - docker
 
 script:
@@ -20,6 +22,21 @@ jobs:
     # Disable test stage
     - stage: test
       if: env(DUMMYVAR) is present
+    # python stage
+    - &stage_python
+      stage: python
+      language: python
+      before_install: pip install Pygments
+      install: pip install .
+      python: "3.5"
+      script:
+        - cd $TRAVIS_BUILD_DIR/.ci
+        - devenv -G -f devenv.yml -o output.yml
+      after_success: pygmentize -g $TRAVIS_BUILD_DIR/.ci/output.yml
+    - <<: *stage_python
+      python: "3.6"
+    - <<: *stage_python
+      python: "3.7"
     # docker stage
     - &devenv_template
       stage: docker
