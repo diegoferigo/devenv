@@ -57,9 +57,12 @@ class DevenvConfProcessor():
                 self._child_must_exist(user, "name", str)
                 self._child_must_exist(user, "uid", int)
                 self._child_must_exist(user, "gid", int)
-                self._add_environment_var("USERNAME=" + user["name"])
-                self._add_environment_var("USER_UID=" + str(user["uid"]))
-                self._add_environment_var("USER_GID=" + str(user["gid"]))
+                name = self._eval_in_shell(user["name"])
+                uid = self._eval_in_shell(user["uid"])
+                gid = self._eval_in_shell(user["gid"])
+                self._add_environment_var("USERNAME=" + name)
+                self._add_environment_var("USER_UID=" + str(uid))
+                self._add_environment_var("USER_GID=" + str(gid))
             except MissingOption:
                 print("While processing 'user' element")
                 raise
@@ -70,6 +73,7 @@ class DevenvConfProcessor():
                 sys.exit()
         elif type(user) is str:
             try:
+                user = self._eval_in_shell(user)
                 userdata = pwd.getpwnam(user)
                 self._add_environment_var("USERNAME=" + userdata.pw_name)
                 self._add_environment_var("USER_UID=" + str(userdata.pw_uid))
@@ -83,6 +87,7 @@ class DevenvConfProcessor():
 
     def _process_project_dir(self):
         project_dir = self.devenvconf["project_dir"]
+        project_dir = self._eval_in_shell(project_dir)
 
         if type(project_dir) is not str:
             raise WrongOptionType("project_dir", str)
@@ -98,16 +103,19 @@ class DevenvConfProcessor():
             if type(resources["directories"]) is not list:
                 raise WrongOptionType("directories", list)
             for dir in resources["directories"]:
+                dir = self._eval_in_shell(dir)
                 self._add_volume(dir)
 
         if "files" in resources:
             if type(resources["files"]) is not list:
                 raise WrongOptionType("files", list)
             for file in resources["files"]:
+                file = self._eval_in_shell(file)
                 self._add_volume(file, is_file=True)
 
     def _process_gpu(self):
         gpu = self.devenvconf["gpu"]
+        gpu = self._eval_in_shell(gpu)
 
         if type(gpu) is not str:
             raise WrongOptionType("gpu", str)
@@ -131,22 +139,26 @@ class DevenvConfProcessor():
             self._child_must_exist(matlab, "folder", str)
             self._child_must_exist(matlab, "dotdir", str)
 
-            if not pathlib.Path(matlab["folder"]).exists():
-                raise Exception(
-                    "Matlab folder '" + matlab["folder"] + "'does not exist")
+            matlabfolder = self._eval_in_shell(matlab["folder"])
+            matlabdotdir = self._eval_in_shell(matlab["dotdir"])
 
-            self._add_volume(matlab["folder"])
-            # TODO: how to do this?
-            self._add_volume(matlab["dotdir"])
+            if not pathlib.Path(matlabfolder).exists():
+                raise Exception(
+                    "Matlab folder '" + matlabfolder + "'does not exist")
+
+            self._add_volume(matlabfolder)
+            self._add_volume(matlabdotdir)
 
             if "mac" in matlab:
-                if type(matlab["mac"]) is not str:
+                mac = self._eval_in_shell(matlab["mac"])
+
+                if type(mac) is not str:
                     raise WrongOptionType("mac", str)
-                if self._is_mac_address(matlab["mac"]):
-                    self._set_mac(matlab["mac"])
-                else:
-                    mac = self._getmac(matlab["mac"])
+                if self._is_mac_address(mac):
                     self._set_mac(mac)
+                else:
+                    macaddr = self._getmac(mac)
+                    self._set_mac(macaddr)
 
         except MissingOption:
             print("While processing 'user' element")
@@ -159,6 +171,7 @@ class DevenvConfProcessor():
 
     def _process_init(self):
         init = self.devenvconf["init"]
+        init = self._eval_in_shell(init)
 
         if type(init) is not str:
             raise WrongOptionType("init", str)
@@ -185,6 +198,7 @@ class DevenvConfProcessor():
 
     def _process_x11(self):
         x11 = self.devenvconf["x11"]
+        x11 = self._eval_in_shell(x11)
 
         if type(x11) is not str:
             raise WrongOptionType("x11", str)
@@ -215,8 +229,11 @@ class DevenvConfProcessor():
             self._child_must_exist(git, "username", str)
             self._child_must_exist(git, "email", str)
 
-            self._add_environment_var("GIT_USER_NAME=" + git["username"])
-            self._add_environment_var("GIT_USER_EMAIL=" + git["email"])
+            git_username = self._eval_in_shell(git["username"])
+            git_email = self._eval_in_shell(git["email"])
+
+            self._add_environment_var("GIT_USER_NAME=" + git_username)
+            self._add_environment_var("GIT_USER_EMAIL=" + git_email)
             # TODO: gpg
         except MissingOption:
             print("While processing 'git' element")
@@ -320,6 +337,17 @@ class DevenvConfProcessor():
         if typeid is not None:
             if type(root[option]) is not typeid:
                 raise WrongOptionType(option, typeid)
+
+    def _eval_in_shell(self, cmd):
+        cmd = os.path.expandvars(cmd)
+
+        if type(cmd) is str:
+            if cmd[0] == "$" and cmd[1] == "(" and cmd[-1] == ")":
+                stdout = subprocess.run(cmd[2:-1].split(), stdout=subprocess.PIPE).stdout
+                return stdout.decode().rstrip()
+            else:
+                return cmd
+
 
     def _get_xauth_filename(self):
         # TODO: check container_name if present
