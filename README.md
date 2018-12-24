@@ -7,8 +7,8 @@
 - [Solutions](#solutions)
 - [Features](#features)
 - [Setup](#setup)
-  - [Python script](#pythonscript)
-  - [Docker image](#dockerimage)
+  - [Python script](#python-script)
+  - [Docker image](#docker-image)
 - [Example](#example)
 
 ## Why?
