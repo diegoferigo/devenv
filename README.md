@@ -54,7 +54,7 @@ All these features are already natively supported by docker. In order to simplif
 1. A python wrapper around `docker-compose`
 1. A docker image with the support of these features
 
-Once installed, you can use the provided docker image as a base for installing the preferred tools that suit your development needs. Access to the `devenv` features are possible through an extended docker-compose `yaml` configuration containing high-level options loaded by the python script.
+Once installed, you can use the provided docker image as a base for installing the preferred tools that suit your development needs. Access to the `devenv` features are possible through an extended docker-compose `yaml` configuration containing high-level options loaded by the python script ([example conf](.ci/devenv.yml)).
 
 ## Setup
 
@@ -68,7 +68,7 @@ pip3 install .
 
 You will find the `devenv` executable in your local binary folder.
 
-```sh
+```
 $ devenv -h
 usage: devenv [-h] [-f FILE] [-G] [-o OUTPUT]
 
@@ -103,8 +103,7 @@ make intel
 # Build the example image with X11
 cd ../example
 docker build --build-arg from=diegoferigo/devenv:intel -t devenv_example .
-devenv -f devenv.yml -o devenv-docker-compose up
-# Or just "devenv up"
+devenv -f devenv.yml -o devenv-docker-compose.yml up # Or just "devenv up"
 ```
 
 A popup will appear on your display.
@@ -115,4 +114,6 @@ The python script processes the [`devenv.yml`](example/devenv.yml) file and crea
 
 ### History
 
-Ancestors of this project were born in the beginning of 2017 during my early experiments with [docker](https://github.com/diegoferigo/dockerfiles). I quickly realized that these development images had to be treated differently than the other images instantiated in the idiomatic docker way (ephemeral containers), and were separated to a [new repository](https://github.com/diegoferigo/development-iit). When I realized that this pipeline could be generalized and customized arbitrarily, `devenv` was split and became a standalone project, reaching a third level of meta-development: a project to develop development environments to develop software projects.
+Ancestors of this project were born in the beginning of 2017 during my early experiments with [docker](https://github.com/diegoferigo/dockerfiles). I quickly realized that these development images had to be treated differently than the other images instantiated in the idiomatic docker way (ephemeral containers), and were separated to a [new repository](https://github.com/diegoferigo/development-iit). When I realized that this pipeline could be generalized and customized arbitrarily, `devenv` was split and became a standalone project, reaching a third level of meta-development:
+
+> A project to develop development environments to develop software projects
