@@ -59,4 +59,13 @@ echo "${USERNAME}    ALL=(ALL:ALL) ALL" >> /etc/sudoers
 # Add the user to video group for HW acceleration (Intel GPUs)
 usermod -aG video ${USERNAME}
 
-# TODO: setup git
+# Configure git
+if [[ ! -z ${GIT_USER_NAME:+x} && ! -z ${GIT_USER_EMAIL:+x} ]] ; then
+	echo "==> Setting up git"
+	su -c "git config --global user.name ${GIT_USER_NAME}" $USERNAME
+	su -c "git config --global user.email ${GIT_USER_EMAIL}" $USERNAME
+	su -c "git config --global color.pager true" $USERNAME
+	su -c "git config --global color.ui auto" $USERNAME
+	su -c "git config --global push.default upstream" $USERNAME
+	su -c "git config --global core.autocrlf input" $USERNAME
+fi
