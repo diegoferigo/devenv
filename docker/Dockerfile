@@ -17,6 +17,12 @@ LABEL \
     org.label-schema.version=$VERSION \
     org.label-schema.schema-version="1.0"
 
+RUN apt-get update &&\
+    apt-get install -y --no-install-recommends \
+        sudo \
+        &&\
+    rm -rf /var/lib/apt/lists/*
+
 # Support of nvidia-docker 2.0
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all
