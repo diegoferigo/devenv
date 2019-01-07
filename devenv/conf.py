@@ -364,7 +364,7 @@ class DevenvConfProcessor():
             return \
                 volume_components[0], \
                 volume_components[1], \
-                volume_components[1]
+                volume_components[2]
 
     def _create_xauth(self, xauth_filename):
         # Remove leftovers from previous runs
