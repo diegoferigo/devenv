@@ -131,7 +131,7 @@ class DevenvConfProcessor():
 
     def _process_matlab(self):
         matlab = self.devenvconf["matlab"]
-
+        
         if type(matlab) is not dict:
             raise WrongOptionType("matlab", dict)
 
@@ -146,8 +146,9 @@ class DevenvConfProcessor():
                 raise Exception(
                     "Matlab folder '" + matlabfolder + "'does not exist")
 
-            self._add_volume(matlabfolder)
+            self._add_volume(matlabfolder + ":/usr/local/MATLAB:rw")
             self._add_volume(matlabdotdir)
+            self._add_environment_var("Matlab_ROOT_DIR=/usr/local/MATLAB")
 
             if "mac" in matlab:
                 mac = self._eval_in_shell(matlab["mac"])

@@ -69,3 +69,9 @@ if [[ ! -z ${GIT_USER_NAME:+x} && ! -z ${GIT_USER_EMAIL:+x} ]] ; then
 	su -c "git config --global push.default upstream" $USERNAME
 	su -c "git config --global core.autocrlf input" $USERNAME
 fi
+
+# Adding matlab to PATH
+if [[ ! -z ${Matlab_ROOT_DIR:+x} ]] ; then
+    echo "==> Setting up matlab"
+    echo "PATH=$PATH:$Matlab_ROOT_DIR/bin" >> /etc/bash.bashrc
+fi
