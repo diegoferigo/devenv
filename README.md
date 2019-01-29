@@ -1,6 +1,6 @@
 # devenv
 
-[![Build Status (master)](https://img.shields.io/travis-ci/com/diegoferigo/development-iit/master.svg?logo=travis&label=master)](https://travis-ci.com/diegoferigo/development-iit)
+[![Build Status (master)](https://img.shields.io/travis/com/diegoferigo/devenv/master.svg?logo=travis&label=master)](https://travis-ci.com/diegoferigo/devenv)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc64ae76526a49c6af2205c798a9e69d)](https://www.codacy.com/app/diegoferigo/devenv?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=diegoferigo/devenv&amp;utm_campaign=Badge_Grade)
 
 - [Why?](#why)
