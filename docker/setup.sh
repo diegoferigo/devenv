@@ -73,5 +73,5 @@ fi
 # Adding matlab to PATH
 if [[ ! -z ${Matlab_ROOT_DIR:+x} ]] ; then
     echo "==> Setting up matlab"
-    echo "PATH=$PATH:$Matlab_ROOT_DIR/bin" >> /etc/bash.bashrc
+    echo 'PATH=$PATH:$Matlab_ROOT_DIR/bin' >> /etc/bash.bashrc
 fi
