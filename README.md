@@ -72,13 +72,13 @@ Once installed, you can use the provided docker image as a base for installing t
 
 ### Python script
 
-From the root of this repository, execute:
+To install the `devenv` script, execute:
 
 ```sh
-pip3 install .
+pip3 install git+https://github.com/diegoferigo/devenv.git
 ```
 
-You will find the `devenv` executable in your local binary folder.
+You will find the `devenv` executable in your local binary folder (usually `~/.local/bin`). In order to use it, make sure that this folder is part of your system path.
 
 ```
 $ devenv -h
@@ -105,7 +105,11 @@ Read the [docker/README.md](docker/README.md) for further information.
 You can find a simple application in the [example](example/) folder. It shows a minimal setup for forwarding a popup to the host X server. Execute the following commands:
 
 ```sh
-# Install the script
+# Clone this repository
+git clone https://github.com/diegoferigo/devenv
+cd devenv
+
+# Install the script if you didn't install it before
 pip3 install .
 
 # Build the base docker image
