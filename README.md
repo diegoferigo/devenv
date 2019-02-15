@@ -1,15 +1,27 @@
-# devenv
+<p align="center">
+    <h1 align="center">devenv</h1>
+</p>
 
-[![Build Status (master)](https://img.shields.io/travis/com/diegoferigo/devenv/master.svg?logo=travis&label=master)](https://travis-ci.com/diegoferigo/devenv)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc64ae76526a49c6af2205c798a9e69d)](https://www.codacy.com/app/diegoferigo/devenv?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=diegoferigo/devenv&amp;utm_campaign=Badge_Grade)
+<p align="center">
+<b><a href="https://github.com/diegoferigo/devenv#why">Why</a></b>
+•
+<b><a href="https://github.com/diegoferigo/devenv#solutions">Solutions</a></b>
+•
+<b><a href="https://github.com/diegoferigo/devenv#features">Features</a></b>
+•
+<b><a href="https://github.com/diegoferigo/devenv#setup">Setup</a></b>
+•
+<b><a href="https://github.com/diegoferigo/devenv#example">Example</a></b>
+</p>
 
-- [Why?](#why)
-- [Solutions](#solutions)
-- [Features](#features)
-- [Setup](#setup)
-  - [Python script](#python-script)
-  - [Docker image](#docker-image)
-- [Example](#example)
+<p align="center">
+    <a href="https://travis-ci.com/diegoferigo/devenv">
+    <img src="https://img.shields.io/travis/com/diegoferigo/devenv/master.svg?logo=travis&label=master" alt="Build Status (master)" />
+    </a>
+    <a href="https://www.codacy.com/app/diegoferigo/devenv?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=diegoferigo/devenv&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/dc64ae76526a49c6af2205c798a9e69d" alt="Codacy Badge" />
+    </a>
+</p>
 
 ## Why?
 
