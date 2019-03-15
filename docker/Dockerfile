@@ -23,6 +23,9 @@ RUN apt-get update &&\
         &&\
     rm -rf /var/lib/apt/lists/*
 
+# Create a new runtimeusers group
+RUN groupadd -K GID_MIN=100 -K GID_MAX=499 runtimeusers
+
 # Support of nvidia-docker 2.0
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all

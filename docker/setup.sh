@@ -39,6 +39,9 @@ create_user() {
 		install -m 644 -g ${USERNAME} -o ${USERNAME} /etc/skel/.bash_logout /home/${USERNAME}
 		install -m 644 -g ${USERNAME} -o ${USERNAME} /etc/skel/.profile /home/${USERNAME}
 	fi
+	
+	# Assign the user to the runtimeusers group
+	gpasswd -a ${USERNAME} runtimeusers
 }
 
 # Create the user
