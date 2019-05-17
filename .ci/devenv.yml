@@ -25,7 +25,6 @@ devenv:
         - "$HOME/.ccache:$HOME/.ccache:rw"
       files:
         - "$HOME/.bash_history:$HOME/.bash_history:rw"
-    gpu: "nvidia"
     x11: "xauth"
     matlab:
       folder: "$TRAVIS_BUILD_DIR"
