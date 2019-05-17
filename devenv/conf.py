@@ -125,6 +125,7 @@ class DevenvConfProcessor():
             self._add_volume("/dev/shm")
             self._set_runtime("runc")
         elif gpu == "nvidia":
+            self._add_device("/dev/dri")
             self._set_runtime("nvidia")
         else:
             raise Exception("gpu '" + gpu + "' not supported")
