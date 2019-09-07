@@ -19,7 +19,7 @@ devenv:
   version: '1.0'
   ci-test:
     user: "$(whoami)"
-    project_dir: "$TRAVIS_BUILD_DIR"
+    project_dir: "$GITHUB_WORKSPACE"
     resources:
       directories:
         - "$HOME/.ccache:$HOME/.ccache:rw"
@@ -27,11 +27,11 @@ devenv:
         - "$HOME/.bash_history:$HOME/.bash_history:rw"
     x11: "xauth"
     matlab:
-      folder: "$TRAVIS_BUILD_DIR"
+      folder: "$GITHUB_WORKSPACE"
       mac: "aa:bb:cc:dd:00:11"
       dotdir: "$HOME/.matlab:$HOME/.matlab"
     init: "systemd"
     gdb: true
     git:
-      username: "Travis CI"
-      email: "travis@ci.com"
+      username: "Github Actions"
+      email: "actions@github.com"
