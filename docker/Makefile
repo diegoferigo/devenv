@@ -22,7 +22,7 @@ nvidia:
 # TODO
 # update_nvidia_opengl:
 
-push_latest: latest
+push_latest:
 	docker push diegoferigo/devenv:latest
 	
 push_intel:
