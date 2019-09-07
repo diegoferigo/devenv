@@ -5,7 +5,7 @@ latest: intel
 
 intel:
 	docker build --rm \
-	        --build-arg from=ubuntu:bionic \
+		--build-arg from=ubuntu:bionic \
 		--build-arg VCS_REF=`git rev-parse --short HEAD` \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--tag diegoferigo/devenv:intel \
@@ -13,7 +13,7 @@ intel:
 
 nvidia:
 	docker build --rm \
-		--build-arg from=nvidia/cuda:10.0-runtime-ubuntu18.04 \
+		--build-arg from=nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04 \
 		--build-arg VCS_REF=`git rev-parse --short HEAD` \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--tag diegoferigo/devenv:nvidia \
