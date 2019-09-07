@@ -33,11 +33,13 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-          DOCKER_REGISTRY_URL: index.docker.io/v1
+          DOCKER_REGISTRY_URL: docker.io
 
       - name: Push
+        uses: actions/docker/cli@master
         if: |
           github.repository == 'diegoferigo/devenv' &&
           github.event_name != 'pull_request' &&
           github.ref == 'refs/heads/master'
-        run: cd docker && make push_${{ matrix.target }}
+        with:
+          args: 'push diegoferigo/devenv:${{ matrix.target }}'
