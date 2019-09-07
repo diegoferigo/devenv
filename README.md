@@ -15,8 +15,8 @@
 </p>
 
 <p align="center">
-    <a href="https://travis-ci.com/diegoferigo/devenv">
-    <img src="https://img.shields.io/travis/com/diegoferigo/devenv/master.svg?logo=travis&label=master" alt="Build Status (master)" />
+    <a href="https://github.com/diegoferigo/devenv/actions">
+    <img src="https://github.com/diegoferigo/devenv/workflows/Continuous%20Integration/badge.svg" alt="Build Status (master)" />
     </a>
     <a href="https://www.codacy.com/app/diegoferigo/devenv?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=diegoferigo/devenv&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/dc64ae76526a49c6af2205c798a9e69d" alt="Codacy Badge" />
