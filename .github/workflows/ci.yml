@@ -1,0 +1,43 @@
+name: 'Continuous Integration'
+
+on:
+  push:
+  pull_request:
+  schedule:
+  # Execute a weekly build on Monday at 2AM UTC
+  - cron:  '0 2 * * 1'
+
+jobs:
+  docker:
+    name: 'Docker: devenv:${{ matrix.target }}'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - latest
+          - intel
+          - nvidia
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: 'Build'
+        run: cd docker && make ${{ matrix.target }}
+
+      - name: Login
+        uses: actions/docker/login@master
+        if: |
+          github.repository == 'diegoferigo/devenv' &&
+          github.event_name != 'pull_request' &&
+          github.ref == 'refs/heads/master'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          DOCKER_REGISTRY_URL: index.docker.io/v1
+
+      - name: Push
+        if: |
+          github.repository == 'diegoferigo/devenv' &&
+          github.event_name != 'pull_request' &&
+          github.ref == 'refs/heads/master'
+        run: cd docker && make push_${{ matrix.target }}
