@@ -52,7 +52,7 @@ class DevenvConfProcessor():
     def _process_user(self):
         user = self.devenvconf["user"]
 
-        if type(user) is dict:
+        if isinstance(user, dict):
             try:
                 self._child_must_exist(user, "name", str)
                 self._child_must_exist(user, "uid", int)
@@ -71,7 +71,7 @@ class DevenvConfProcessor():
                 print("While processing 'user' element")
                 raise
                 sys.exit()
-        elif type(user) is str:
+        elif isinstance(user, str):
             try:
                 user = self._eval_in_shell(user)
                 userdata = pwd.getpwnam(user)
@@ -89,25 +89,25 @@ class DevenvConfProcessor():
         project_dir = self.devenvconf["project_dir"]
         project_dir = self._eval_in_shell(project_dir)
 
-        if type(project_dir) is not str:
+        if not isinstance(project_dir, str):
             raise WrongOptionType("project_dir", str)
         self._add_volume(project_dir)
 
     def _process_resources(self):
         resources = self.devenvconf["resources"]
 
-        if type(resources) is not dict:
+        if not isinstance(resources, dict):
             raise WrongOptionType("project_dir", dict)
 
         if "directories" in resources:
-            if type(resources["directories"]) is not list:
+            if not isinstance(resources["directories"], list):
                 raise WrongOptionType("directories", list)
-            for dir in resources["directories"]:
-                dir = self._eval_in_shell(dir)
-                self._add_volume(dir)
+            for directory in resources["directories"]:
+                directory = self._eval_in_shell(directory)
+                self._add_volume(directory)
 
         if "files" in resources:
-            if type(resources["files"]) is not list:
+            if not isinstance(resources["files"], list):
                 raise WrongOptionType("files", list)
             for file in resources["files"]:
                 file = self._eval_in_shell(file)
@@ -117,7 +117,7 @@ class DevenvConfProcessor():
         gpu = self.devenvconf["gpu"]
         gpu = self._eval_in_shell(gpu)
 
-        if type(gpu) is not str:
+        if not isinstance(gpu, str):
             raise WrongOptionType("gpu", str)
 
         if gpu == "intel":
@@ -133,7 +133,7 @@ class DevenvConfProcessor():
     def _process_matlab(self):
         matlab = self.devenvconf["matlab"]
         
-        if type(matlab) is not dict:
+        if not isinstance(matlab, dict):
             raise WrongOptionType("matlab", dict)
 
         try:
@@ -154,7 +154,7 @@ class DevenvConfProcessor():
             if "mac" in matlab:
                 mac = self._eval_in_shell(matlab["mac"])
 
-                if type(mac) is not str:
+                if not isinstance(mac, str):
                     raise WrongOptionType("mac", str)
                 if self._is_mac_address(mac):
                     self._set_mac(mac)
@@ -175,7 +175,7 @@ class DevenvConfProcessor():
         init = self.devenvconf["init"]
         init = self._eval_in_shell(init)
 
-        if type(init) is not str:
+        if not isinstance(init, str):
             raise WrongOptionType("init", str)
 
         if init == "systemd":
@@ -190,7 +190,7 @@ class DevenvConfProcessor():
     def _process_gdb(self):
         gdb = self.devenvconf["gdb"]
 
-        if type(gdb) is not bool:
+        if not(gdb, bool):
             raise WrongOptionType("gdb", bool)
 
         if gdb:
@@ -202,7 +202,7 @@ class DevenvConfProcessor():
         x11 = self.devenvconf["x11"]
         x11 = self._eval_in_shell(x11)
 
-        if type(x11) is not str:
+        if not isinstance(x11, str):
             raise WrongOptionType("x11", str)
 
         if x11 == "xhost":
@@ -224,7 +224,7 @@ class DevenvConfProcessor():
     def _process_git(self):
         git = self.devenvconf["git"]
 
-        if type(git) is not dict:
+        if not isinstance(git, dict):
             raise WrongOptionType("git", dict)
 
         try:
@@ -333,17 +333,19 @@ class DevenvConfProcessor():
     # OTHER HELPERS
     # =============
 
-    def _child_must_exist(self, root, option, typeid=None):
+    @staticmethod
+    def _child_must_exist(root, option, typeid=None):
         if option not in root:
             raise MissingOption(option)
         if typeid is not None:
-            if type(root[option]) is not typeid:
+            if not isinstance(root[option], typeid):
                 raise WrongOptionType(option, typeid)
 
-    def _eval_in_shell(self, cmd):
+    @staticmethod
+    def _eval_in_shell(cmd):
         cmd = os.path.expandvars(cmd)
 
-        if type(cmd) is str:
+        if isinstance(cmd, str):
             if cmd[0] == "$" and cmd[1] == "(" and cmd[-1] == ")":
                 stdout = subprocess.run(cmd[2:-1].split(), stdout=subprocess.PIPE).stdout
                 return stdout.decode().rstrip()
