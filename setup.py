@@ -13,8 +13,9 @@ setup(
   packages=find_packages(),
   url="https://github.com/diegoferigo/devenv",
   install_requires=[
-    'docker',
-    'PyYAML',
+    'docker<4.0',
+    'PyYAML<=4.3',
+    'requests<2.21'
     'docker-compose',
   ],
   entry_points={
