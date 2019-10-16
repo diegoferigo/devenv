@@ -57,11 +57,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: 'Build'
+      - name: Build
         run: cd docker && make ${{ matrix.target }}
 
       - name: Login
-        uses: actions/docker/login@master
         if: |
           github.repository == 'diegoferigo/devenv' &&
           github.event_name != 'pull_request' &&
@@ -69,13 +68,11 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-          DOCKER_REGISTRY_URL: docker.io
+        run: echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
 
       - name: Push
-        uses: actions/docker/cli@master
         if: |
           github.repository == 'diegoferigo/devenv' &&
           github.event_name != 'pull_request' &&
           github.ref == 'refs/heads/master'
-        with:
-          args: 'push diegoferigo/devenv:${{ matrix.target }}'
+        run: "docker push diegoferigo/devenv:${{ matrix.target }}"
