@@ -73,9 +73,6 @@ if [[ ! -z ${GIT_USER_NAME:+x} && ! -z ${GIT_USER_EMAIL:+x} ]] ; then
 	su -c "git config --global core.autocrlf input" $USERNAME
 fi
 
-echo "==> Configuring the support of extending PATH system-wide"
-echo 'PATH=$DEVENV_PATH:$PATH' >> /etc/bash.bashrc
-
 # Adding matlab to PATH
 if [[ ! -z ${Matlab_ROOT_DIR:+x} ]] ; then
     echo "==> Setting up matlab"
