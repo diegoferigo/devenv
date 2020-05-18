@@ -12,10 +12,7 @@ LABEL \
     org.label-schema.description="Base for docker-based development environments" \
     org.label-schema.url="https://github.com/diegoferigo/devenv" \
     org.label-schema.vcs-ref=$VCS_REF \
-    org.label-schema.vcs-url="https://github.com/diegoferigo/devenv" \
-    # org.label-schema.vendor="" \
-    org.label-schema.version=$VERSION \
-    org.label-schema.schema-version="1.0"
+    org.label-schema.vcs-url="https://github.com/diegoferigo/devenv"
 
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
