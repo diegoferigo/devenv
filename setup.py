@@ -15,7 +15,7 @@ setup(
   install_requires=[
     'docker<4.0',
     'PyYAML<=4.3',
-    'requests<2.21'
+    'requests<2.21',
     'docker-compose',
   ],
   entry_points={
