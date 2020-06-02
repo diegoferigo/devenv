@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-# These variables can be overridden by docker environment variables
-USER_UID=${USER_UID:-1000}
-USER_GID=${USER_GID:-1000}
-USERNAME=${USERNAME:-docker}
-
 create_user() {
 	# If the home folder exists, set a flag.
 	# Creating the user during container initialization often is anticipated

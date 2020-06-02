@@ -13,13 +13,14 @@ LABEL \
     org.label-schema.url="https://github.com/diegoferigo/devenv" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url="https://github.com/diegoferigo/devenv"
-
+    
 # Change default shell to bash. This is effective only in the Dockerfile.
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
         sudo \
+        gosu \
         &&\
     rm -rf /var/lib/apt/lists/*
 
@@ -29,6 +30,11 @@ RUN groupadd -K GID_MIN=100 -K GID_MAX=499 runtimeusers
 # Support of nvidia-docker 2.0
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all
+
+# Runtime user defaults
+ENV USER_UID=1000
+ENV USER_GID=1000
+ENV USERNAME=docker
 
 # Setup an additional entrypoint script
 COPY setup.sh /usr/sbin/setup_devenv.sh

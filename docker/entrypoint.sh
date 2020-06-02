@@ -11,4 +11,4 @@ setup_devenv.sh
 echo "==> Devenv container ready"
 
 # If a CMD is passed, execute it
-exec "$@"
+gosu $USERNAME "$@"
