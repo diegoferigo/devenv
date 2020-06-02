@@ -14,8 +14,8 @@ LABEL \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url="https://github.com/diegoferigo/devenv"
 
-# Workaround for the PATH environment variable
-RUN echo 'PATH=$DEVENV_PATH:$PATH' >> /etc/bash.bashrc
+# Change default shell to bash. This is effective only in the Dockerfile.
+SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
