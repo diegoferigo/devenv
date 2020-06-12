@@ -29,7 +29,7 @@ jobs:
           architecture: x64
 
       - name: Dependencies
-        run: pip install Pygments
+        run: pip install Pygments paramiko
 
       - name: Install
         run: pip install .
