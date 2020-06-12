@@ -39,7 +39,7 @@ ENV USERNAME=docker
 # Setup an additional entrypoint script
 COPY setup.sh /usr/sbin/setup_devenv.sh
 COPY entrypoint.sh /usr/sbin/entrypoint_devenv.sh
-RUN chmod 755 /usr/sbin/setup_devenv.sh
-RUN chmod 755 /usr/sbin/entrypoint_devenv.sh
+RUN chmod 755 /usr/sbin/setup_devenv.sh &&\
+    chmod 755 /usr/sbin/entrypoint_devenv.sh
 ENTRYPOINT ["/usr/sbin/entrypoint_devenv.sh"]
 CMD ["bash"]
