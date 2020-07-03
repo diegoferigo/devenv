@@ -58,9 +58,6 @@ create_user() {
     fi
 }
 
-# Assign the user to the runtimeusers group
-gpasswd -a ${USERNAME} runtimeusers
-
 # Create the user if run -u is not passed
 if [[ $(id -u) -eq 0 && $(id -g) -eq 0 ]] ; then
     echo "==> Creating the runtime user"
@@ -79,6 +76,9 @@ if [[ $(id -u) -eq 0 && $(id -g) -eq 0 ]] ; then
 
     # Add the user to video group for HW acceleration (Intel GPUs)
     usermod -aG video ${USERNAME}
+
+    # Assign the user to the runtimeusers group
+    gpasswd -a ${USERNAME} runtimeusers
 fi
 
 # Configure git
