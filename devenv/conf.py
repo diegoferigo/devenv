@@ -55,11 +55,21 @@ class DevenvConfProcessor():
         if isinstance(user, dict):
             try:
                 self._child_must_exist(user, "name", str)
-                self._child_must_exist(user, "uid", int)
-                self._child_must_exist(user, "gid", int)
+                self._child_must_exist(user, "uid", (int, str))
+                self._child_must_exist(user, "gid", (int, str))
+
                 name = self._eval_in_shell(user["name"])
-                uid = self._eval_in_shell(user["uid"])
-                gid = self._eval_in_shell(user["gid"])
+
+                if isinstance(user["uid"], str):
+                    uid = self._eval_in_shell(user["uid"])
+                else:
+                    uid = user["uid"]
+
+                if isinstance(user["gid"], str):
+                    gid = self._eval_in_shell(user["gid"])
+                else:
+                    gid = user["gid"]
+
                 self._add_environment_var("USERNAME=" + name)
                 self._add_environment_var("USER_UID=" + str(uid))
                 self._add_environment_var("USER_GID=" + str(gid))
