@@ -5,7 +5,7 @@ latest: intel
 
 intel:
 	docker build --rm \
-		--build-arg from=ubuntu:bionic \
+		--build-arg from=ubuntu:focal \
 		--build-arg VCS_REF=`git rev-parse --short HEAD` \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--tag diegoferigo/devenv:intel \
@@ -13,18 +13,15 @@ intel:
 
 nvidia:
 	docker build --rm \
-		--build-arg from=nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04 \
+		--build-arg from=diegoferigo/cuda:10.2-cudnn8-runtime-ubuntu20.04 \
 		--build-arg VCS_REF=`git rev-parse --short HEAD` \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--tag diegoferigo/devenv:nvidia \
 		.
 
-# TODO
-# update_nvidia_opengl:
-
 push_latest:
 	docker push diegoferigo/devenv:latest
-	
+
 push_intel:
 	docker push diegoferigo/devenv:intel
 	

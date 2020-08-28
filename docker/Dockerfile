@@ -1,4 +1,4 @@
-ARG from=ubuntu:bionic
+ARG from=ubuntu:focal
 FROM ${from}
 
 # Build-time metadata as defined at http://label-schema.org
