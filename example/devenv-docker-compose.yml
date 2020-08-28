@@ -5,8 +5,8 @@ services:
     - /dev/dri
     environment:
     - USERNAME=dferigo
-    - USER_UID=1001
-    - USER_GID=1001
+    - USER_UID=1000
+    - USER_GID=1000
     - DISPLAY
     - XAUTHORITY=/tmp/.devenv_example.xauth
     image: devenv_example
