@@ -90,6 +90,7 @@ if [[ -n ${GIT_USER_NAME:+x} && -n ${GIT_USER_EMAIL:+x} ]] ; then
     su -c "git config --global color.ui auto" $USERNAME
     su -c "git config --global push.default upstream" $USERNAME
     su -c "git config --global core.autocrlf input" $USERNAME
+    su -c "git config --global pager.branch false" $USERNAME
 fi
 
 # Adding matlab to PATH
