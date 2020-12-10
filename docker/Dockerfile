@@ -15,7 +15,7 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/diegoferigo/devenv"
     
 # Change default shell to bash. This is effective only in the Dockerfile.
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "-i", "-c"]
 
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
