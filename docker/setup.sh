@@ -28,13 +28,11 @@ create_user() {
 
     # Create a group with USER_GID
     if ! getent group ${USERNAME} >/dev/null; then
-        echo "Creating ${USERNAME} group"
-        groupadd -f -g ${USER_GID} ${USERNAME} 2> /dev/null
+        groupadd -f -g ${USER_GID} ${USERNAME} >/dev/null
     fi
 
     # Create a user with USER_UID
     if ! getent passwd ${USERNAME} >/dev/null; then
-        echo "Creating ${USERNAME} user"
         adduser --quiet \
                 --disabled-login \
                 --home ${USER_HOME} \
@@ -60,7 +58,7 @@ create_user() {
 
 # Create the user if run -u is not passed
 if [[ $(id -u) -eq 0 && $(id -g) -eq 0 ]] ; then
-    echo "==> Creating the runtime user"
+    echo "==> Creating runtime user" "'""${USERNAME}:${USERNAME}""'"
     create_user
 
     # Set a default root password
@@ -78,7 +76,7 @@ if [[ $(id -u) -eq 0 && $(id -g) -eq 0 ]] ; then
     usermod -aG video ${USERNAME}
 
     # Assign the user to the runtimeusers group
-    gpasswd -a ${USERNAME} runtimeusers
+    gpasswd -a ${USERNAME} runtimeusers >/dev/null
 fi
 
 # Configure git
