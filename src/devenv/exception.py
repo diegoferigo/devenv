@@ -1,5 +1,6 @@
 class Error(Exception):
     """Base class for exceptions in this module."""
+
     pass
 
 
@@ -20,5 +21,4 @@ class MissingOption(Error):
 
 class WrongOptionType(Error):
     def __init__(self, option, typeid):
-        super().__init__(
-            "Expecting option '" + option + "' with type " + str(typeid))
+        super().__init__("Expecting option '" + option + "' with type " + str(typeid))
