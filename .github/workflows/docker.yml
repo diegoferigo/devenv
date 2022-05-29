@@ -1,0 +1,42 @@
+name: Docker CI/CD
+
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+  schedule:
+  # Execute a weekly build on Monday at 2AM UTC
+  - cron: "0 2 * * 1"
+
+jobs:
+
+  docker:
+    name: Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build images
+        run: |
+          cd docker
+          docker compose build
+        env:
+          IMAGE_NAME_PREFIX: ghcr.io/${{ github.repository_owner }}
+
+      - name: Push images
+        if: |
+          github.repository == 'diegoferigo/devenv' &&
+          github.event_name != 'pull_request' &&
+          github.ref == 'refs/heads/master'
+        run: docker compose push
