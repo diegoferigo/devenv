@@ -28,9 +28,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build images
-        run: |
-          cd docker
-          docker compose build
+        working-directory: docker
+        run: docker compose build
         env:
           IMAGE_NAME_PREFIX: ghcr.io/${{ github.repository_owner }}
 
@@ -39,4 +38,5 @@ jobs:
           github.repository == 'diegoferigo/devenv' &&
           github.event_name != 'pull_request' &&
           github.ref == 'refs/heads/master'
+        working-directory: docker
         run: docker compose push
