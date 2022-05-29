@@ -1,7 +1,9 @@
+import sys
+
+import yaml
+
 import devenv.cli
 import devenv.conf
-import yaml
-import sys
 
 
 def main():
@@ -27,8 +29,7 @@ def main():
     for service in compose_yaml["services"].keys():
         if service in devenv_yaml:
             # Process the devenv section and fill the service
-            devenv.conf.process(
-                compose_yaml["services"][service], devenv_yaml[service])
+            devenv.conf.process(compose_yaml["services"][service], devenv_yaml[service])
         else:
             print("Skipping", service, ", not handled by dockit")
 
@@ -37,6 +38,7 @@ def main():
 
     if not args.generate:
         from compose.cli.main import main as compose_main
-        sys.argv[:] = ['docker-compose', '-f', args.output.name] + extras
+
+        sys.argv[:] = ["docker-compose", "-f", args.output.name] + extras
         print("Executing docker-compose")
         compose_main()

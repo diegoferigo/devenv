@@ -1,17 +1,17 @@
-import os
-import sys
-import pwd
-import yaml
-import pathlib
 import getpass
+import os
+import pathlib
+import pwd
 import subprocess
+import sys
 
-from devenv.exception import MissingOption
-from devenv.exception import WrongOptionType
+import yaml
+
+from devenv.exception import MissingOption, WrongOptionType
 
 
 def loadfile(config_filename):
-    with open(config_filename, 'r') as stream:
+    with open(config_filename, "r") as stream:
         try:
             return yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -30,7 +30,7 @@ def process(compose_service, devenv_service):
         compose_service = processor.process(option)
 
 
-class DevenvConfProcessor():
+class DevenvConfProcessor:
     def __init__(self, devenv_conf, compose_conf):
         self.devenvconf = devenv_conf
         self.composeconf = compose_conf
@@ -142,7 +142,7 @@ class DevenvConfProcessor():
 
     def _process_matlab(self):
         matlab = self.devenvconf["matlab"]
-        
+
         if not isinstance(matlab, dict):
             raise WrongOptionType("matlab", dict)
 
@@ -154,8 +154,7 @@ class DevenvConfProcessor():
             matlabdotdir = self._eval_in_shell(matlab["dotdir"])
 
             if not pathlib.Path(matlabfolder).exists():
-                raise Exception(
-                    "Matlab folder '" + matlabfolder + "'does not exist")
+                raise Exception("Matlab folder '" + matlabfolder + "'does not exist")
 
             self._add_volume(matlabfolder + ":/usr/local/MATLAB:rw")
             self._add_volume(matlabdotdir)
@@ -195,12 +194,12 @@ class DevenvConfProcessor():
             self._add_tmpfs("/run/lock")
             self._add_cap("SYS_ADMIN")
             self._set_stopsignal("SIGRTMIN+3")
-            #self._set_detached(True) # TODO:
+            # self._set_detached(True) # TODO:
 
     def _process_gdb(self):
         gdb = self.devenvconf["gdb"]
 
-        if not(gdb, bool):
+        if not (gdb, bool):
             raise WrongOptionType("gdb", bool)
 
         if gdb:
@@ -290,7 +289,8 @@ class DevenvConfProcessor():
             self.composeconf["volumes"] = list()
 
         self.composeconf["volumes"].append(
-            str(path) + ":" + str(destination) + ":" + mode)
+            str(path) + ":" + str(destination) + ":" + mode
+        )
 
     def _add_device(self, device):
         if not pathlib.Path(device).exists():
@@ -357,11 +357,12 @@ class DevenvConfProcessor():
 
         if isinstance(cmd, str):
             if cmd[0] == "$" and cmd[1] == "(" and cmd[-1] == ")":
-                stdout = subprocess.run(cmd[2:-1].split(), stdout=subprocess.PIPE).stdout
+                stdout = subprocess.run(
+                    cmd[2:-1].split(), stdout=subprocess.PIPE
+                ).stdout
                 return stdout.decode().rstrip()
             else:
                 return cmd
-
 
     def _get_xauth_filename(self):
         # TODO: check container_name if present
@@ -375,10 +376,7 @@ class DevenvConfProcessor():
         elif len(volume_components) == 2:
             return volume_components[0], volume_components[1], "rw"
         else:
-            return \
-                volume_components[0], \
-                volume_components[1], \
-                volume_components[2]
+            return volume_components[0], volume_components[1], volume_components[2]
 
     def _create_xauth(self, xauth_filename):
         # Remove leftovers from previous runs
@@ -389,14 +387,17 @@ class DevenvConfProcessor():
         xauth.touch()
 
         # Populate the file
-        cmd = "xauth nlist $DISPLAY |\
+        cmd = (
+            "xauth nlist $DISPLAY |\
                grep -v ffff |\
                sed -e 's/^..../ffff/' |\
-               xauth -f " + xauth_filename + " nmerge -"
+               xauth -f "
+            + xauth_filename
+            + " nmerge -"
+        )
 
         if subprocess.call(cmd, shell=True) != 0:
-            raise Exception(
-                "Failed to populate xauth file '" + xauth_filename + "'")
+            raise Exception("Failed to populate xauth file '" + xauth_filename + "'")
 
     def _remove_xauth(self, xauth_filename):
         xauth = pathlib.Path(xauth_filename)
@@ -405,7 +406,7 @@ class DevenvConfProcessor():
 
     def _getmac(self, interface):
         try:
-            mac = open('/sys/class/net/'+interface+'/address').readline()
+            mac = open("/sys/class/net/" + interface + "/address").readline()
         except Exception:
             raise Exception("Interface '" + interface + "' not found")
         return mac[0:17]
