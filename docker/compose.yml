@@ -1,0 +1,24 @@
+name: devenv
+
+services:
+
+  devenv: &devenv
+    image: $IMAGE_NAME_PREFIX/devenv:latest
+    build: &devenv_build
+      context: ./
+      dockerfile: Dockerfile
+      args: &devenv_build_args
+        from: ubuntu:focal
+
+  devenv_intel:
+    <<: *devenv
+    image: $IMAGE_NAME_PREFIX/devenv:intel
+
+  devenv_nvidia:
+    <<: *devenv
+    image: $IMAGE_NAME_PREFIX/devenv:nvidia
+    build:
+      <<: *devenv_build
+      args:
+        <<: *devenv_build_args
+        from: nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04

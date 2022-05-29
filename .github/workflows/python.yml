@@ -1,0 +1,42 @@
+name: Python CI/CD
+
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+  schedule:
+  # Execute a weekly build on Monday at 2AM UTC
+  - cron:  '0 2 * * 1'
+
+jobs:
+
+  python:
+    name: "Python ${{ matrix.python }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --unshallow
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Action dependencies
+        run: pip install Pygments
+
+      - name: Install Python package
+        run: pip install -v .[all]
+
+      - name: Test generation of Compose file
+        run: devenv -G -f .ci/devenv.yml -o output.yml
+
+      - name: Check output
+        run: pygmentize -g output.yml
